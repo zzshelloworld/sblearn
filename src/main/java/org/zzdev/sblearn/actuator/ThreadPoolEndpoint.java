@@ -1,59 +1,25 @@
 package org.zzdev.sblearn.actuator;
 
 
-import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
-import org.springframework.boot.actuate.endpoint.annotation.ReadOperation;
-import org.springframework.boot.actuate.endpoint.annotation.Selector;
-import org.springframework.boot.actuate.endpoint.annotation.WriteOperation;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 
-import java.util.ArrayList;
+import javax.annotation.Resource;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
 
-@Endpoint(id = "threadPool")
 public class ThreadPoolEndpoint  {
+    @Resource(name = "consumerQueueThreadPool")
+    private ExecutorService consumerQueueThreadPool;
 
-    private final Map<String, Object> people = new HashMap<>();
+    private final Map<String, Object> pool = new HashMap<>();
 
     ThreadPoolEndpoint() {
-        this.people.put("mike", new Person("Michael Redlich"));
-        this.people.put("rowena", new Person("Rowena Redlich"));
-        this.people.put("barry", new Person("Barry Burd"));
+        this.pool.put("12","12");
     }
 
-    @ReadOperation
-    public List<Person> getAll() {
-        return new ArrayList<Person>(this.people.values());
+    public Map<String, Object> getAll() {
+        return pool;
     }
-
-    @ReadOperation
-    public Person getPerson(@Selector String person) {
-        return this.people.get(person);
-    }
-
-    @WriteOperation
-    public void updatePerson(@Selector String name, String person) {
-        this.people.put(name, new Person(person));
-    }
-
-    public static class Person {
-        private String name;
-
-        Person(String name) {
-            this.name = name;
-        }
-
-        public String getName() {
-            return this.name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-    }
-
 
 }
 
